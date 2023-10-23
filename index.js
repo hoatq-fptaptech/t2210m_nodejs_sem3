@@ -7,7 +7,8 @@ app.listen(port,function(){
 })
 app.set("view engine","ejs");
 app.use(express.static("public"));
-
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 // connect database
 require("./src/db/connect");
 
@@ -20,4 +21,12 @@ app.get("/about-us",function(req,res){
 })
 app.get("/auth/register",function(req,res){
     res.render("auth/register");
+})
+
+app.post("/auth/register",function(req,res){
+    const data = req.body;
+    const userModel = require("./src/models/user.model");
+    const u = new userModel(data);
+    u.save();
+    res.send("Done");
 })
