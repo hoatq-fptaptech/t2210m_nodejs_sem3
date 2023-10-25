@@ -13,20 +13,8 @@ app.use(express.urlencoded({extended:true}));
 require("./src/db/connect");
 
 // routes
-app.get("/",function(req,res){
-    res.render("home/home");
-})
-app.get("/about-us",function(req,res){
-    res.render("aboutus/about");
-})
-app.get("/auth/register",function(req,res){
-    res.render("auth/register");
-})
+const web_route = require("./src/routes/web.route");
+app.use("/",web_route);
 
-app.post("/auth/register",function(req,res){
-    const data = req.body;
-    const userModel = require("./src/models/user.model");
-    const u = new userModel(data);
-    u.save();
-    res.send("Done");
-})
+const auth_route = require("./src/routes/auth.route");
+app.use("/auth",auth_route);
