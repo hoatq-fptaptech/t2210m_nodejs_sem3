@@ -16,3 +16,9 @@ exports.postRegister = async function(req,res){
         res.send(error);
     }    
 };
+exports.login =  function(req,res){
+   res.render("auth/login");     
+}
+exports.postLogin = function(req,res){
+    
+}
