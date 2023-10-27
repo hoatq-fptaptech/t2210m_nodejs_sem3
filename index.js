@@ -11,6 +11,19 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 // connect database
 require("./src/db/connect");
+// set session
+const session = require("express-session");
+app.use(
+    session({
+       resave: true,
+       saveUninitialized: true,
+       secret: "t2210mdemonodejsabcxyz123",
+       cookie: {
+        maxAge: 3600000, // milisecond
+        secure: false
+       }
+    })
+);
 
 // routes
 const web_route = require("./src/routes/web.route");

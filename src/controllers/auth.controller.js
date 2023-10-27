@@ -1,6 +1,7 @@
 const userModel = require("./../models/user.model");
 const bcrypt = require("bcryptjs");
 const {validationResult} = require("express-validator");
+const gmail = require("./../mails/gmail");
 exports.register = function(req,res){
     res.render("auth/register");
 };
@@ -16,6 +17,17 @@ exports.postRegister = async function(req,res){
         data.password = hashed;
         const u = new userModel(data);
         await u.save();
+        // send email 
+        gmail.sendMail({
+            from: "T2210M Registration",
+            to: u.email,
+            // cc:"nhanvien@gmail.com",
+            // bcc: "manager@gmail.com",
+            subject:"Đăng ký tài khoản thành công",
+            // text:"",
+            html: "<h1>Nếu gửi mail cho giáo viên mà không có subject sẽ bị trừ điểm</h1>"
+        });
+
         res.send("Done");
     } catch (error) {
         res.send(error);
@@ -38,7 +50,11 @@ exports.postLogin = async function(req,res){
         if(!verify){
             return res.send("Email or Password is not correct");
         }
-        // b3- phản hồi khi đúng
+        // b3- phản hồi khi đúng -- lưu user vào session
+        req.session.auth = {
+            full_name: u.full_name,
+            email: u.email
+        }
         return res.send("Log in successfully");
 
     } catch (error) {
