@@ -1,3 +1,4 @@
+require("dotenv").config();// sẽ sử dụng được file cấu hình .env
 const express = require("express");
 const app = express(); // host - app
 const port = 2210;
@@ -17,9 +18,9 @@ app.use(
     session({
        resave: true,
        saveUninitialized: true,
-       secret: "t2210mdemonodejsabcxyz123",
+       secret: process.env.SESSION_SECRET,
        cookie: {
-        maxAge: 3600000, // milisecond
+        maxAge: process.env.COOKIE_MAXAGE, // milisecond
         secure: false
        }
     })

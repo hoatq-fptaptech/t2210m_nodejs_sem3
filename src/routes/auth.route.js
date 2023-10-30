@@ -11,6 +11,11 @@ const validateRegister = ()=>{
         check("password","Vui lòng nhập mật khẩu").not().isEmpty(),
     ]
 }
+const auth_middleware = require("./../middlewares/auth");
+// router.use(auth_middleware.guest);
+router.use("/register",auth_middleware.guest);
+router.use("/login",auth_middleware.guest);
+
 router.get("/register",controller.register);
 router.post("/register",validateRegister(),controller.postRegister);
 router.get("/login",controller.login);

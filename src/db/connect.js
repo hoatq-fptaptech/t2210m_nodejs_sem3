@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const server = "mongodb://localhost:27017";
-const db_name = "t2210m";
+const server = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}`;
+const db_name = process.env.DB_NAME;
 class Database{
     constructor(){
         mongoose.connect(`${server}/${db_name}`)
