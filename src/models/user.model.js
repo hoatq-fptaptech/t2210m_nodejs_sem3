@@ -23,6 +23,11 @@ const user_schema = new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    // avatar: String
+    avatar: {
+        data:String,
+        contentType:String
     }
 });
 module.exports = mongoose.model("User",user_schema);// users

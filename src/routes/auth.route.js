@@ -13,11 +13,25 @@ const validateRegister = ()=>{
 }
 const auth_middleware = require("./../middlewares/auth");
 // router.use(auth_middleware.guest);
+
 router.use("/register",auth_middleware.guest);
 router.use("/login",auth_middleware.guest);
 
 router.get("/register",controller.register);
-router.post("/register",validateRegister(),controller.postRegister);
+
+// upload file
+const multer = require("multer");
+const storage = multer.diskStorage({
+    destination: function(req,file,callback){
+        callback(null,"public/uploads");
+    },
+    filename: function(req,file,callback){
+        callback(null,Date.now()+file.originalname);
+    }
+});
+const upload = multer({storage:storage});
+// 
+router.post("/register",upload.single("avatar"),controller.postRegister);
 router.get("/login",controller.login);
 router.post("/login",controller.postLogin);
 module.exports = router;

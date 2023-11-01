@@ -12,6 +12,16 @@ exports.postRegister = async function(req,res){
         return res.send(errors.array());
     }
     try {
+        if(req.file){
+            const file = req.file;
+            // data.avatar = "/uploads/"+file.filename;
+            const fs = require("fs");
+            const img = fs.readFileSync(file.path);
+            data.avatar = {
+                contentType: file.mimetype,
+                data: img.toString("base64")
+            }
+        }
         const salt = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(data.password,salt);
         data.password = hashed;
